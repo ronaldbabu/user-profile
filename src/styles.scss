@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+.ng5-slider .ng5-slider-tick-value {
+  display: none !important;
+}
+
+.ng5-slider .ng5-slider-tick-legend { 
+  width: 200px !important;
+  max-width: 200px !important;
+}

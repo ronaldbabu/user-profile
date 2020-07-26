@@ -1,0 +1,25 @@
+.leftSection{
+  border-right: 3px solid #cdcdcdee;
+}
+
+.mainSection{
+  margin: 6%;
+}
+
+.photoUpload{
+  background-color: #607D8B;
+    width: 150px;
+    height: 150px;
+    color: #fff;
+    display: flex;
+    justify-content: center;  
+    cursor: pointer;
+}
+
+.photoUpload span{
+  align-self: center;
+}
+
+.removeButton{
+  width: 210px;
+}

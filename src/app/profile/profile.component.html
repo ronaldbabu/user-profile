@@ -1,0 +1,123 @@
+<div class="row mainSection">
+
+
+  <div class="col-lg-3 leftSection" *ngIf="imageEditMode">
+    <input #myInput hidden id="file" type="file" (change)="onFileChange($event)" accept=".png, .jpg, .jpeg">
+    <img [src]="imageSrc" *ngIf="imageSrc" style="height: auto; width: 210px;">
+    <div *ngIf="!imageSrc" (click)="myInput.click()" class="photoUpload"><span>Upload your photo</span></div> <br> <br>
+    <button class="btn btn-danger profileButton" *ngIf="imageSrc" (click)="clearImage()">Remove Photo</button>
+    <button class="btn btn-primary profileButton" *ngIf="imageSrc" (click)="saveImage()">Save Photo</button>
+    <button class="btn btn-danger profileButton" (click)="cancelImage()">Cancel</button>
+
+  </div>
+
+
+  <div class="col-lg-3 leftSection" *ngIf="!imageEditMode">
+    <img [src]="imageSource" style="height: auto; width: 210px;"> <br>
+    <a (click)="editPhoto()">Edit Photo</a> <br>
+    <a (click)="editProfile()">Edit Profile</a>
+  </div>
+
+
+  <div class="col-lg-9" *ngIf="!profileEditMode">
+    <p>
+      I am {{firstName}} {{lastName}} and I am above {{userAge}} and you can<br>
+      send your emails to {{userEmail}}. I lives in the<br>
+      state of {{userState}}. I like to play {{userInterests}}.<br>
+    </p>
+    <p *ngIf="newsLetter">And please send me the newsletters.</p>
+    <p>Please reach out to me on my phone {{userPhone}}</p> <br>
+    <button class="btn btn-primary">Agree</button>
+  </div>
+
+
+  <div class="col-lg-9" *ngIf="profileEditMode">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+
+        <!-- First Name -->
+        <div class="form-group col-5">
+          <label>First Name</label>
+          <input type="text" formControlName="firstName" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+          <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+            <div *ngIf="f.firstName.errors.required">First Name is required</div>
+            <div *ngIf="f.firstName.errors.maxlength">Max 20 characters allowed</div>
+            <div *ngIf="f.firstName.errors.pattern">Only alpabetic characters allowed</div>
+          </div>
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-group col-5">
+          <label>Last Name</label>
+          <input type="text" formControlName="lastName" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+          <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+            <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Age -->
+      <div class="form-group">
+        <label>Age</label>
+        <ng5-slider [(value)]="value" [options]="options" (userChange)="onUserChange($event)"></ng5-slider>
+      </div>
+      <br>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" formControlName="email" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+          <div *ngIf="f.email.errors.required">Email is required</div>
+          <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div class="form-group">
+        <label>Tel</label>
+        <input type="number" formControlName="phone" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
+        <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+          <div *ngIf="f.phone.errors.required">Tel is required</div>
+        </div>
+      </div>
+
+      <!-- State -->
+      <div class="form-group">
+        <label>State</label>
+        <select formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.state.errors }">
+          <option disabled value="">Select state</option>
+          <option *ngFor="let item of stateList" value="{{item.name}}">{{item.name}}</option>
+        </select>
+        <div *ngIf="submitted && f.state.errors" class="invalid-feedback">
+          <div *ngIf="f.state.errors.required">State is required</div>
+        </div>
+      </div>
+
+      <!-- Interests -->
+      <div class="form-group">
+        <label>Interests</label>
+        <tag-input [(ngModel)]="interests" placeholder="" secondaryPlaceholder="Add your interests"
+          [ngModelOptions]="{standalone: true}"></tag-input>
+      </div>
+
+      <!-- Terms and conditions -->
+      <div class="form-group form-check">
+        <input type="checkbox" formControlName="newsLetter" id="newsLetter" class="form-check-input" />
+        <label for="newsLetter" class="form-check-label">Accept Terms & Conditions</label>
+      </div>
+
+      <!-- Submit -->
+      <div class="text-center">
+        <button class="btn btn-primary mr-1">Update</button>
+        <button class="btn btn-danger mr-1" (click)="cancelProfileEdit()">Cancel</button>
+
+      </div>
+    </form>
+  </div>
+
+</div>

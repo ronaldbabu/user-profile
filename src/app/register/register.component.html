@@ -1,0 +1,175 @@
+<div class="mainSection">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+    <div class="row">
+      <div class="col-lg-3 leftSection">
+        <!-- Image -->
+        <div class="form-group">
+          <input #myInput hidden formControlName="file" id="file" type="file" class="form-control"
+            (change)="onFileChange($event)" accept=".png, .jpg, .jpeg">
+          <div *ngIf="f.file.touched && f.file.invalid" class="alert alert-danger">
+            <div *ngIf="f.file.errors.required">Image is required.</div>
+          </div>
+        </div>
+        <img [src]="imageSrc" *ngIf="imageSrc" style="height: auto; width: 210px;">
+        <div *ngIf="!imageSrc" (click)="myInput.click()" class="photoUpload"><span>Upload your photo</span></div> <br>
+        <br>
+        <button class="btn btn-danger removeButton" *ngIf="imageSrc" (click)="clearImage()">Remove Photo</button>
+      </div>
+      <div class="col-lg-9">
+        <div class="form-row">
+
+          <!-- First Name -->
+          <div class="form-group col-5">
+            <label>First Name</label>
+            <input type="text" formControlName="firstName" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+              <div *ngIf="f.firstName.errors.required">First Name is required</div>
+              <div *ngIf="f.firstName.errors.maxlength">Max 20 characters allowed</div>
+              <div *ngIf="f.firstName.errors.pattern">Only alpabetic characters allowed</div>
+            </div>
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-group col-5">
+            <label>Last Name</label>
+            <input type="text" formControlName="lastName" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+              <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Age -->
+        <div class="form-group">
+          <label>Age</label>
+          <ng5-slider [(value)]="value" [options]="options" (userChange)="onUserChange($event)"></ng5-slider>
+        </div>
+        <br>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" formControlName="email" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">Email is required</div>
+            <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="form-group">
+          <label>Tel</label>
+          <input type="number" formControlName="phone" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
+          <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+            <div *ngIf="f.phone.errors.required">Tel is required</div>
+          </div>
+        </div>
+
+        <!-- State -->
+        <div class="form-group">
+          <label>State</label>
+          <select formControlName="state" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.state.errors }">
+            <option disabled value="">Select state</option>
+            <option *ngFor="let item of stateList" value="{{item.name}}">{{item.name}}</option>
+          </select>
+          <div *ngIf="submitted && f.state.errors" class="invalid-feedback">
+            <div *ngIf="f.state.errors.required">State is required</div>
+          </div>
+        </div>
+
+        <!-- Country -->
+        <div class="form-group">
+          <label>Country</label>
+          <select formControlName="country" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.country.errors }">
+            <option disabled value="">Select country</option>
+            <option *ngFor="let item of countrylist" value="{{item.name}}">{{item.name}}</option>
+          </select>
+          <div *ngIf="submitted && f.country.errors" class="invalid-feedback">
+            <div *ngIf="f.country.errors.required">Country is required</div>
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="form-group">
+          <label>Address</label>
+          <select formControlName="address" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.address.errors }" (change)="addressChange($event)">
+            <option disabled value="">Select address</option>
+            <option *ngFor="let item of addresslist" value="{{item.value}}">{{item.name}}</option>
+          </select>
+          <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+            <div *ngIf="f.address.errors.required">Address is required</div>
+          </div>
+        </div>
+
+        <!-- Home Address -->
+        <div class="form-row" *ngIf="showHomeAddress">
+          <div class="form-group col-5">
+            <label>Home Address 1</label>
+            <input type="text" formControlName="homeAddress1" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.homeAddress1.errors }" />
+            <div *ngIf="submitted && f.homeAddress1.errors" class="invalid-feedback">
+              <div *ngIf="f.homeAddress1.errors.required">Home Address 1 is required</div>
+            </div>
+          </div>
+
+          <div class="form-group col-5">
+            <label>Home Address 2</label>
+            <input type="text" formControlName="homeAddress2" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.homeAddress2.errors }" />
+            <div *ngIf="submitted && f.homeAddress2.errors" class="invalid-feedback">
+              <div *ngIf="f.homeAddress2.errors.required">Home Address 2 is required</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Company Address -->
+        <div class="form-row" *ngIf="showCompanyAddress">
+          <div class="form-group col-5">
+            <label>Company Address 1</label>
+            <input type="text" formControlName="companyAddress1" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.companyAddress1.errors }" />
+            <div *ngIf="submitted && f.companyAddress1.errors" class="invalid-feedback">
+              <div *ngIf="f.companyAddress1.errors.required">Company Address 1 is required</div>
+            </div>
+          </div>
+
+          <div class="form-group col-5">
+            <label>Company Address 2</label>
+            <input type="text" formControlName="companyAddress2" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.companyAddress2.errors }" />
+            <div *ngIf="submitted && f.companyAddress2.errors" class="invalid-feedback">
+              <div *ngIf="f.companyAddress2.errors.required">Company Address 2 is required</div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Interests -->
+        <div class="form-group">
+          <label>Interests</label>
+          <tag-input [(ngModel)]="interests" placeholder="" secondaryPlaceholder="Add your interests"
+            [ngModelOptions]="{standalone: true}"></tag-input>
+        </div>
+
+        <!-- Terms and conditions -->
+        <div class="form-group form-check">
+          <input type="checkbox" formControlName="newsLetter" id="newsLetter" class="form-check-input" />
+          <label for="newsLetter" class="form-check-label">Accept Terms & Conditions</label>
+        </div>
+
+        <!-- Submit -->
+        <div class="text-center">
+          <button class="btn btn-primary mr-1">Register</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
